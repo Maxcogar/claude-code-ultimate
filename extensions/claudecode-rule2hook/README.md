@@ -14,43 +14,57 @@ Convert natural language project rules into Claude Code hooks automatically! Wri
 - 🛡️ **Safe Configuration** - Backs up existing hooks before applying changes
 - 🚀 **Zero Dependencies** - Works directly with Claude Code
 
-## 🚀 Quick Start
+## 📦 Installation
 
-In Claude Code, type:
+### Option 1: Project-Specific Installation (Recommended)
+
+To use the rule2hook command in your own project:
 
 ```bash
+# 1. Clone this repository
+git clone https://github.com/zxdxjtu/claudecode-rule2hook.git
+
+# 2. Copy the command to your project
+mkdir -p your-project/.claude/commands
+cp claudecode-rule2hook/.claude/commands/rule2hook.md your-project/.claude/commands/
+
+# 3. Use in your project
+cd your-project
+# Now /project:rule2hook is available when using Claude Code in this directory
+```
+
+### Option 2: Global Installation
+
+To make the command available in all projects:
+
+```bash
+# Clone the repository
+git clone https://github.com/zxdxjtu/claudecode-rule2hook.git
+
+# Copy to global Claude commands directory
+mkdir -p ~/.claude/commands
+cp claudecode-rule2hook/.claude/commands/rule2hook.md ~/.claude/commands/
+
+# Now /rule2hook is available globally (without /project: prefix)
+```
+
+## 🚀 Quick Start
+
+After installation, in Claude Code, type:
+
+```bash
+# If using project-specific installation (Option 1)
+/project:rule2hook "Format Python files with black after editing"
+
+# If using global installation (Option 2)
 /rule2hook "Format Python files with black after editing"
+
+# Convert rules from CLAUDE.md
+/project:rule2hook  # or /rule2hook if global
+
+# Convert multiple rules
+/project:rule2hook "Run tests after editing, Format code before committing"
 ```
-
-## 📚 How It Works
-
-1. **Input** - Provide rules as text or let Claude read from CLAUDE.md
-2. **Analysis** - Claude analyzes rules to determine trigger events, target tools, and commands
-3. **Generation** - Creates proper hook configurations
-4. **Application** - Saves hooks to `~/.claude/hooks.json`
-
-## 🎯 Examples
-
-### Code Formatting
-**Input:** `"Format Python files with black after editing"`
-
-**Generated Hook:**
-```json
-{
-  "hooks": {
-    "PostToolUse": [{
-      "matcher": "Edit|MultiEdit|Write",
-      "hooks": [{
-        "type": "command",
-        "command": "black ."
-      }]
-    }]
-  }
-}
-```
-
-### Git Workflow
-**Input:** `"Run git status when finishing a task"`
 
 ## 📋 Supported Rule Patterns
 
