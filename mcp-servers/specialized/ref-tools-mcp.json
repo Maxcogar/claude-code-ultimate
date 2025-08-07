@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "ref-tools-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "ref-tools-mcp"],
+      "env": {}
+    }
+  }
+}

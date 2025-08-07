@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "freecad-mcp": {
+      "command": "cmd",
+      "args": ["/c", "python", "-m", "freecad_mcp.server"],
+      "cwd": "C:\\Users\\maxco\\freecad-mcp",
+      "env": {}
+    }
+  }
+}

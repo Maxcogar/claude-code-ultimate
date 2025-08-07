@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "fusion-mcp-server": {
+      "command": "cmd",
+      "args": ["/c", "python", "server.py"],
+      "cwd": "C:\\Users\\maxco\\Fusion-MCP-Server",
+      "env": {}
+    }
+  }
+}

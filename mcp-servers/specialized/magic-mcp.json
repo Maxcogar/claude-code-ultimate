@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "magic-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@21st-dev/magic"],
+      "env": {}
+    }
+  }
+}
