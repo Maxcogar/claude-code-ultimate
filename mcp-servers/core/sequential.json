@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sequential": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@sequential/mcp-server"],
+      "env": {}
+    }
+  }
+}

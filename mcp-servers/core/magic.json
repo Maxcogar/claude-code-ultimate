@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "magic": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@magic/mcp-server"],
+      "env": {}
+    }
+  }
+}
