@@ -1,0 +1,50 @@
+{
+  "name": "claude-code-ultimate",
+  "version": "1.0.0",
+  "description": "Ultimate Claude Code development environment - organized, automated, and ready to go",
+  "main": "index.js",
+  "scripts": {
+    "setup": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1",
+    "setup-force": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1 -Force",
+    "test-mcp": "powershell -ExecutionPolicy Bypass -File scripts/test-mcp.ps1",
+    "backup": "powershell -ExecutionPolicy Bypass -File scripts/backup.ps1",
+    "doctor": "claude doctor"
+  },
+  "keywords": [
+    "claude-code",
+    "mcp-servers",
+    "superclaude",
+    "development-environment",
+    "automation",
+    "ai-development"
+  ],
+  "author": "Max",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxco/claude-code-ultimate.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "@context7/mcp-server": "^1.0.0",
+    "@sequential/mcp-server": "^1.0.0", 
+    "@playwright/mcp-server": "^1.0.0",
+    "@magic/mcp-server": "^1.0.0",
+    "@21st-dev/magic": "^1.0.0",
+    "ref-tools-mcp": "^3.0.0"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}
