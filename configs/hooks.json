@@ -1,0 +1,47 @@
+{
+  "_comment": "Global hook configurations for Claude Code Ultimate",
+  "_description": "These hooks are active across all projects unless overridden",
+  "version": "1.0.0",
+  "hooks": {
+    "PreProjectInit": [
+      {
+        "name": "backup-existing-config",
+        "description": "Backup existing configurations before project initialization",
+        "type": "command",
+        "command": "powershell -ExecutionPolicy Bypass -File scripts/backup.ps1",
+        "enabled": true
+      }
+    ],
+    "PostProjectInit": [
+      {
+        "name": "setup-mcp-servers",
+        "description": "Ensure MCP servers are properly configured",
+        "type": "command",
+        "command": "powershell -ExecutionPolicy Bypass -File scripts/test-mcp.ps1",
+        "enabled": true
+      }
+    ],
+    "PreToolUse": [
+      {
+        "name": "health-check",
+        "description": "Quick health check before tool execution",
+        "matcher": ".*",
+        "type": "validation",
+        "enabled": false,
+        "_comment": "Disabled by default to avoid overhead"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "name": "auto-format",
+        "description": "Auto-format code after editing",
+        "matcher": "Edit|MultiEdit|Write",
+        "type": "conditional",
+        "condition": "file.extension in ['.js', '.ts', '.py', '.json']",
+        "command": "auto-format-file",
+        "enabled": false,
+        "_comment": "Disabled by default - enable per project as needed"
+      }
+    ]
+  }
+}

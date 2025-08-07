@@ -1,0 +1,32 @@
+{
+  "_comment": "Global Claude Code Ultimate settings",
+  "_description": "Central configuration for the Claude Code Ultimate development environment",
+  "version": "1.0.0",
+  "environment": {
+    "platform": "windows",
+    "shell": "powershell",
+    "wrapCommands": true,
+    "_comment": "Windows requires cmd /c wrapper for npx commands"
+  },
+  "mcpSettings": {
+    "autoStart": true,
+    "healthCheck": true,
+    "retryAttempts": 3,
+    "timeoutSeconds": 30
+  },
+  "projectTemplates": {
+    "enabled": true,
+    "defaultTemplate": "web-app",
+    "templatePath": "../templates/"
+  },
+  "backups": {
+    "enabled": true,
+    "retainDays": 30,
+    "backupPath": "../backups/"
+  },
+  "logging": {
+    "level": "info",
+    "enableDebug": false,
+    "logPath": "../logs/"
+  }
+}

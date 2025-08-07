@@ -1,0 +1,54 @@
+{
+  "_comment": "Default workspace settings for new projects",
+  "_description": "These settings are applied when initializing new projects",
+  "version": "1.0.0",
+  "mcpServers": {
+    "core": [
+      "context7",
+      "sequential",
+      "playwright"
+    ],
+    "optional": [
+      "magic-mcp",
+      "ref-tools-mcp",
+      "freecad-mcp"
+    ]
+  },
+  "extensions": {
+    "bmadMethod": {
+      "autoInit": true,
+      "defaultPersona": "full-stack-developer"
+    },
+    "superdesign": {
+      "autoInit": false,
+      "_comment": "Enable only for UI-focused projects"
+    },
+    "rule2hook": {
+      "autoInit": true,
+      "readClaude": true
+    }
+  },
+  "projectStructure": {
+    "createDotClaude": true,
+    "createReadme": true,
+    "initGit": true,
+    "createGitignore": true
+  },
+  "templates": {
+    "web-app": {
+      "description": "React/Next.js web application",
+      "mcpServers": ["context7", "sequential", "playwright", "magic-mcp"],
+      "extensions": ["bmadMethod", "superdesign"]
+    },
+    "iot-project": {
+      "description": "ESP32/Arduino IoT project",
+      "mcpServers": ["context7", "sequential", "ref-tools-mcp"],
+      "extensions": ["bmadMethod"]
+    },
+    "fusion360-addon": {
+      "description": "Fusion 360 CAD addon",
+      "mcpServers": ["context7", "sequential", "freecad-mcp"],
+      "extensions": ["bmadMethod"]
+    }
+  }
+}

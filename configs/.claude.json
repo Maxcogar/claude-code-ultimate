@@ -1,0 +1,33 @@
+{
+  "_comment": "Global Claude Code configuration",
+  "_description": "This file contains global settings for Claude Code integration",
+  "version": "1.0.0",
+  "mcpServers": {
+    "_comment": "MCP server configurations are managed separately in mcp-servers/",
+    "configPath": "../mcp-servers/mcp-master.json"
+  },
+  "globalHooks": {
+    "_comment": "Global hook configurations",
+    "enabled": true,
+    "hookPath": "./hooks.json"
+  },
+  "extensions": {
+    "_comment": "Extension configurations",
+    "bmadMethod": {
+      "enabled": true,
+      "path": "../extensions/bmad-method"
+    },
+    "superdesign": {
+      "enabled": true,
+      "path": "../extensions/superdesign"
+    },
+    "rule2hook": {
+      "enabled": true,
+      "path": "../extensions/claudecode-rule2hook"
+    }
+  },
+  "workspace": {
+    "_comment": "Default workspace settings",
+    "configPath": "./workspace-defaults.json"
+  }
+}
