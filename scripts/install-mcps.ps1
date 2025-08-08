@@ -20,7 +20,7 @@ if (-not (Get-Command "npx" -ErrorAction SilentlyContinue)) {
 # Define MCP servers to install
 $mcpServers = @(
     @{name="context7"; package="@context7/mcp-server"; version="latest"},
-    @{name="sequential"; package="@sequential-thinking/mcp-server"; version="latest"},
+    @{name="sequential"; package="@sequential/mcp-server"; version="latest"},
     @{name="playwright"; package="@playwright/mcp-server"; version="latest"},
     @{name="magic"; package="@magic/mcp-server"; version="latest"},
     @{name="magic-mcp"; package="@21st-dev/magic"; version="latest"},

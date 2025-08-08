@@ -7,7 +7,7 @@
     },
     "sequential": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@sequential-thinking/mcp-server"],
+      "args": ["/c", "npx", "-y", "@sequential/mcp-server"],
       "env": {}
     },
     "playwright": {
