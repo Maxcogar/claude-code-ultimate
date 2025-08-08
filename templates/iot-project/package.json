@@ -1,0 +1,54 @@
+{
+  "name": "claude-code-ultimate-iot-project",
+  "version": "1.0.0",
+  "description": "ESP32 IoT project template with Claude Code Ultimate integration",
+  "main": "src/main.cpp",
+  "scripts": {
+    "build": "pio run",
+    "upload": "pio run --target upload",
+    "monitor": "pio device monitor",
+    "clean": "pio run --target clean",
+    "test": "pio test",
+    "claude:setup": "claude doctor && node scripts/setup-claude.js",
+    "claude:analyze": "sc analyze src/",
+    "claude:document": "sc document --format arduino"
+  },
+  "platformio": {
+    "env_default": "esp32dev",
+    "platforms": ["espressif32"],
+    "frameworks": ["arduino"],
+    "boards": ["esp32dev", "esp32-s3-devkitc-1"],
+    "libraries": [
+      "WiFi",
+      "ArduinoJson@^6.21.3",
+      "PubSubClient@^2.8",
+      "DHT sensor library@^1.4.4",
+      "Adafruit Unified Sensor@^1.1.9",
+      "ArduinoOTA@^1.0.9",
+      "AsyncTCP@^1.1.4",
+      "ESPAsyncWebServer@^1.2.4"
+    ]
+  },
+  "claude": {
+    "agents": ["iot-specialist", "code-reviewer", "doc-generator"],
+    "mcpServers": ["context7", "sequential", "magic"],
+    "templates": ["sensor", "actuator", "wireless", "web-interface"],
+    "hardware": {
+      "platform": "ESP32",
+      "sensors": ["DHT22", "BME280", "ultrasonic"],
+      "actuators": ["LED", "relay", "servo"],
+      "communication": ["WiFi", "Bluetooth", "MQTT"]
+    }
+  },
+  "keywords": [
+    "iot",
+    "esp32",
+    "arduino",
+    "embedded",
+    "sensors",
+    "claude",
+    "ai-assisted"
+  ],
+  "author": "Claude Code Ultimate",
+  "license": "MIT"
+}
