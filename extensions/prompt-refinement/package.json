@@ -1,0 +1,63 @@
+{
+  "name": "claude-prompt-refinement",
+  "version": "1.0.0",
+  "description": "Intelligent prompt optimization and refinement for Claude AI interactions",
+  "main": "src/index.js",
+  "bin": {
+    "prompt-refine": "bin/cli.js",
+    "claude-prompt-refinement": "bin/cli.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "build": "webpack --mode production",
+    "test": "jest",
+    "lint": "eslint src/",
+    "analyze": "node src/analyzer.js",
+    "template": "node src/template-engine.js"
+  },
+  "keywords": [
+    "claude",
+    "ai",
+    "prompt",
+    "refinement",
+    "optimization",
+    "communication",
+    "llm",
+    "assistant",
+    "vscode",
+    "extension"
+  ],
+  "author": "Max (Claude Code Ultimate)",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.4.1",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.5",
+    "ora": "^5.4.1",
+    "lodash": "^4.17.21",
+    "natural": "^6.3.0",
+    "sentiment": "^5.0.2",
+    "yaml": "^2.3.2",
+    "fs-extra": "^11.1.1",
+    "glob": "^8.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "eslint": "^8.44.0",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxcogar/claude-code-ultimate"
+  },
+  "bugs": {
+    "url": "https://github.com/maxcogar/claude-code-ultimate/issues"
+  },
+  "homepage": "https://github.com/maxcogar/claude-code-ultimate#readme"
+}
