@@ -1,5 +1,5 @@
 ---
-allowed-tools: [Read, Glob, Grep, TodoWrite, Task, mcp__sequential-thinking__sequentialthinking]
+allowed-tools: [Read, Glob, Grep, TodoWrite, Task, mcp__sequential__sequential]
 description: "Execute complex tasks with intelligent workflow management and cross-session persistence"
 wave-enabled: true
 complexity-threshold: 0.7
