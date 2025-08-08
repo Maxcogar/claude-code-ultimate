@@ -22,7 +22,11 @@ $mcpServers = @(
     @{name="context7"; package="@context7/mcp-server"; version="latest"},
     @{name="sequential"; package="@sequential-thinking/mcp-server"; version="latest"},
     @{name="playwright"; package="@playwright/mcp-server"; version="latest"},
-    @{name="magic"; package="@magic/mcp-server"; version="latest"}
+    @{name="magic"; package="@magic/mcp-server"; version="latest"},
+    @{name="magic-mcp"; package="@21st-dev/magic"; version="latest"},
+    @{name="ref-tools-mcp"; package="ref-tools-mcp"; version="latest"},
+    @{name="git-mcp"; package="git-mcp-server"; version="latest"},
+    @{name="prompt-refinement"; package="claude-prompt-refinement"; version="latest"}
 )
 
 # Create logs directory if it doesn't exist
@@ -42,14 +46,16 @@ foreach ($server in $mcpServers) {
         
         Write-Host "✅ Successfully installed $($server.name)" -ForegroundColor Green
         
-        # Test the installation
-        $testCmd = "cmd /c npx $($server.package) --version"
-        $result = Invoke-Expression $testCmd -ErrorAction SilentlyContinue
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ $($server.name) is working correctly" -ForegroundColor Green
-        } else {
-            Write-Host "⚠️  $($server.name) installed but may have issues" -ForegroundColor Yellow
+        # Test the installation (skip for some packages that may not have --version)
+        if ($server.name -notin @("magic-mcp", "ref-tools-mcp", "prompt-refinement")) {
+            $testCmd = "cmd /c npx $($server.package) --version"
+            $result = Invoke-Expression $testCmd -ErrorAction SilentlyContinue
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "✅ $($server.name) is working correctly" -ForegroundColor Green
+            } else {
+                Write-Host "⚠️  $($server.name) installed but version check failed" -ForegroundColor Yellow
+            }
         }
         
     } catch {
