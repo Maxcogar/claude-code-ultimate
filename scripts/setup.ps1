@@ -33,15 +33,32 @@ $repoRoot = Split-Path -Parent $setupDir
 
 Write-Host "📦 Repository root: $repoRoot" -ForegroundColor Cyan
 
-# Update MCP configuration with Windows-compatible wrappers
+# Set environment variable for Claude Code Ultimate directory
+$env:CLAUDE_CODE_ULTIMATE_DIR = $repoRoot
+[System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_ULTIMATE_DIR", $repoRoot, [System.EnvironmentVariableTarget]::User)
+Write-Host "🌍 Set CLAUDE_CODE_ULTIMATE_DIR environment variable" -ForegroundColor Green
+
+# Update MCP configuration with environment variables and Windows-compatible wrappers
 Write-Host "🔧 Updating MCP server configuration..." -ForegroundColor Yellow
 
 $mcpMasterPath = Join-Path $repoRoot "mcp-servers\mcp-master.json"
-$claudeMcpPath = Join-Path $claudeConfigPath "mcp.json"
+$claudeMcpPath = Join-Path $claudeConfigPath "mcp_settings.json"
 
 if (Test-Path $mcpMasterPath) {
-    Copy-Item $mcpMasterPath -Destination $claudeMcpPath -Force
-    Write-Host "✅ MCP configuration updated with Windows wrappers" -ForegroundColor Green
+    # Read the master configuration
+    $masterConfig = Get-Content $mcpMasterPath | ConvertFrom-Json
+    
+    # Replace environment variable placeholders with actual paths
+    foreach ($serverName in $masterConfig.mcpServers.PSObject.Properties.Name) {
+        $server = $masterConfig.mcpServers.$serverName
+        if ($server.cwd -and $server.cwd.Contains('%CLAUDE_CODE_ULTIMATE_DIR%')) {
+            $server.cwd = $server.cwd.Replace('%CLAUDE_CODE_ULTIMATE_DIR%', $repoRoot)
+        }
+    }
+    
+    # Save updated configuration
+    $masterConfig | ConvertTo-Json -Depth 10 | Set-Content $claudeMcpPath
+    Write-Host "✅ MCP configuration updated with Windows wrappers and environment variables" -ForegroundColor Green
 } else {
     Write-Warning "⚠️ Master MCP configuration not found at: $mcpMasterPath"
 }
@@ -58,32 +75,44 @@ if (Test-Path $scMetadataPath) {
     $claudeScPath = $claudeConfigPath
     
     # Only copy if repo versions are newer or don't exist in claude config
-    Get-ChildItem "$repoScPath\agents\*" -File | ForEach-Object {
-        $targetPath = Join-Path "$claudeScPath\agents" $_.Name
-        if (-not (Test-Path $targetPath) -or (Get-Item $_).LastWriteTime -gt (Get-Item $targetPath).LastWriteTime) {
-            Copy-Item $_.FullName -Destination $targetPath -Force
-            Write-Host "📋 Updated agent: $($_.Name)" -ForegroundColor Cyan
+    if (Test-Path "$repoScPath\agents") {
+        if (-not (Test-Path "$claudeScPath\agents")) {
+            New-Item -ItemType Directory -Path "$claudeScPath\agents" -Force | Out-Null
+        }
+        
+        Get-ChildItem "$repoScPath\agents\*" -File | ForEach-Object {
+            $targetPath = Join-Path "$claudeScPath\agents" $_.Name
+            if (-not (Test-Path $targetPath) -or (Get-Item $_).LastWriteTime -gt (Get-Item $targetPath).LastWriteTime) {
+                Copy-Item $_.FullName -Destination $targetPath -Force
+                Write-Host "📋 Updated agent: $($_.Name)" -ForegroundColor Cyan
+            }
         }
     }
     
-    Get-ChildItem "$repoScPath\commands\*" -File -Recurse | ForEach-Object {
-        $relativePath = $_.FullName.Substring($repoScPath.Length + 1)
-        $targetPath = Join-Path $claudeScPath $relativePath
-        $targetDir = Split-Path -Parent $targetPath
-        
-        if (-not (Test-Path $targetDir)) {
-            New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
-        }
-        
-        if (-not (Test-Path $targetPath) -or (Get-Item $_).LastWriteTime -gt (Get-Item $targetPath).LastWriteTime) {
-            Copy-Item $_.FullName -Destination $targetPath -Force
-            Write-Host "⚡ Updated command: $relativePath" -ForegroundColor Cyan
+    if (Test-Path "$repoScPath\commands") {
+        Get-ChildItem "$repoScPath\commands\*" -File -Recurse | ForEach-Object {
+            $relativePath = $_.FullName.Substring($repoScPath.Length + 1)
+            $targetPath = Join-Path $claudeScPath $relativePath
+            $targetDir = Split-Path -Parent $targetPath
+            
+            if (-not (Test-Path $targetDir)) {
+                New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+            }
+            
+            if (-not (Test-Path $targetPath) -or (Get-Item $_).LastWriteTime -gt (Get-Item $targetPath).LastWriteTime) {
+                Copy-Item $_.FullName -Destination $targetPath -Force
+                Write-Host "⚡ Updated command: $relativePath" -ForegroundColor Cyan
+            }
         }
     }
 } else {
     Write-Host "📥 SuperClaude not installed. Skipping enhancement." -ForegroundColor Yellow
     Write-Host "💡 Install SuperClaude first, then run this setup again." -ForegroundColor Cyan
 }
+
+# Install npm MCP servers
+Write-Host "📦 Installing npm MCP servers..." -ForegroundColor Yellow
+& "$setupDir\install-mcps.ps1"
 
 # Check Node.js and required packages
 Write-Host "🔍 Checking dependencies..." -ForegroundColor Yellow
@@ -105,72 +134,76 @@ try {
 # Test MCP servers
 Write-Host "🧪 Testing MCP server configurations..." -ForegroundColor Yellow
 
-$mcpConfig = Get-Content $claudeMcpPath | ConvertFrom-Json
-$workingServers = @()
-$failedServers = @()
+if (Test-Path $claudeMcpPath) {
+    $mcpConfig = Get-Content $claudeMcpPath | ConvertFrom-Json
+    $workingServers = @()
+    $failedServers = @()
 
-foreach ($serverName in $mcpConfig.mcpServers.PSObject.Properties.Name) {
-    $server = $mcpConfig.mcpServers.$serverName
-    Write-Host "  Testing $serverName..." -ForegroundColor Gray
-    
-    try {
-        if ($server.command -eq "cmd" -and $server.args[2] -eq "npx") {
-            # Test npx package availability
-            $package = $server.args[4]
-            $testResult = & npm list -g $package 2>$null
-            if ($LASTEXITCODE -eq 0 -or $package -match "@") {
-                $workingServers += $serverName
-                Write-Host "  ✅ $serverName ready" -ForegroundColor Green
+    foreach ($serverName in $mcpConfig.mcpServers.PSObject.Properties.Name) {
+        $server = $mcpConfig.mcpServers.$serverName
+        Write-Host "  Testing $serverName..." -ForegroundColor Gray
+        
+        try {
+            if ($server.command -eq "cmd" -and $server.args[2] -eq "npx") {
+                # Test npx package availability
+                $package = $server.args[4]
+                $testResult = & npm list -g $package 2>$null
+                if ($LASTEXITCODE -eq 0 -or $package -match "@") {
+                    $workingServers += $serverName
+                    Write-Host "  ✅ $serverName ready" -ForegroundColor Green
+                } else {
+                    $failedServers += $serverName
+                    Write-Host "  ⚠️ $serverName needs package: $package" -ForegroundColor Yellow
+                }
+            } elseif ($server.command -eq "cmd" -and $server.args[2] -eq "python") {
+                # Test Python-based MCP servers
+                if ($server.cwd -and (Test-Path $server.cwd)) {
+                    $workingServers += $serverName
+                    Write-Host "  ✅ $serverName ready" -ForegroundColor Green
+                } else {
+                    $failedServers += $serverName
+                    Write-Host "  ⚠️ $serverName path not found: $($server.cwd)" -ForegroundColor Yellow
+                }
             } else {
-                $failedServers += $serverName
-                Write-Host "  ⚠️ $serverName needs package: $package" -ForegroundColor Yellow
-            }
-        } elseif ($server.command -eq "cmd" -and $server.args[2] -eq "python") {
-            # Test Python-based MCP servers
-            if ($server.cwd -and (Test-Path $server.cwd)) {
                 $workingServers += $serverName
-                Write-Host "  ✅ $serverName ready" -ForegroundColor Green
-            } else {
-                $failedServers += $serverName
-                Write-Host "  ⚠️ $serverName path not found: $($server.cwd)" -ForegroundColor Yellow
+                Write-Host "  ✅ $serverName configured" -ForegroundColor Green
             }
-        } else {
-            $workingServers += $serverName
-            Write-Host "  ✅ $serverName configured" -ForegroundColor Green
+        } catch {
+            $failedServers += $serverName
+            Write-Host "  ❌ $serverName failed: $($_.Exception.Message)" -ForegroundColor Red
         }
-    } catch {
-        $failedServers += $serverName
-        Write-Host "  ❌ $serverName failed: $($_.Exception.Message)" -ForegroundColor Red
     }
-}
 
-# Summary
-Write-Host "`n🎉 Setup Complete!" -ForegroundColor Cyan
-Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
+    # Summary
+    Write-Host "`n🎉 Setup Complete!" -ForegroundColor Cyan
+    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
 
-Write-Host "📊 Status Summary:" -ForegroundColor White
-Write-Host "  • Working MCP servers: $($workingServers.Count)" -ForegroundColor Green
-Write-Host "  • Servers needing attention: $($failedServers.Count)" -ForegroundColor Yellow
+    Write-Host "📊 Status Summary:" -ForegroundColor White
+    Write-Host "  • Working MCP servers: $($workingServers.Count)" -ForegroundColor Green
+    Write-Host "  • Servers needing attention: $($failedServers.Count)" -ForegroundColor Yellow
 
-if ($workingServers.Count -gt 0) {
-    Write-Host "`n✅ Working servers:" -ForegroundColor Green
-    $workingServers | ForEach-Object { Write-Host "  • $_" -ForegroundColor Green }
-}
+    if ($workingServers.Count -gt 0) {
+        Write-Host "`n✅ Working servers:" -ForegroundColor Green
+        $workingServers | ForEach-Object { Write-Host "  • $_" -ForegroundColor Green }
+    }
 
-if ($failedServers.Count -gt 0) {
-    Write-Host "`n⚠️ Servers needing attention:" -ForegroundColor Yellow
-    $failedServers | ForEach-Object { Write-Host "  • $_" -ForegroundColor Yellow }
+    if ($failedServers.Count -gt 0) {
+        Write-Host "`n⚠️ Servers needing attention:" -ForegroundColor Yellow
+        $failedServers | ForEach-Object { Write-Host "  • $_" -ForegroundColor Yellow }
+    }
 }
 
 Write-Host "`n🚀 Next Steps:" -ForegroundColor Cyan
 Write-Host "  1. Run 'claude doctor' to verify the setup" -ForegroundColor White
 Write-Host "  2. Install missing npm packages if needed" -ForegroundColor White
 Write-Host "  3. Test Claude Code with your new setup" -ForegroundColor White
-Write-Host "  4. Explore specialized MCP servers in mcp-servers/specialized/" -ForegroundColor White
+Write-Host "  4. Explore templates/ folder for project starters" -ForegroundColor White
+Write-Host "  5. Use extensions/ for additional functionality" -ForegroundColor White
 
 Write-Host "`n💡 Pro Tips:" -ForegroundColor Cyan
-Write-Host "  • Use 'claude -h' to see all available commands" -ForegroundColor White
-Write-Host "  • Check the templates/ folder for project starters" -ForegroundColor White
+Write-Host "  • Use '/sc' commands for SuperClaude functionality" -ForegroundColor White
+Write-Host "  • Check docs/ folder for detailed guides" -ForegroundColor White
+Write-Host "  • Environment variable CLAUDE_CODE_ULTIMATE_DIR is set for portability" -ForegroundColor White
 Write-Host "  • Your original setup is backed up at: $BackupPath" -ForegroundColor White
 
 Write-Host "`n🎯 Happy coding with your ultimate Claude Code setup!" -ForegroundColor Green
