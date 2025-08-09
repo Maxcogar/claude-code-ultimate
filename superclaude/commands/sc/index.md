@@ -1,3 +1,8 @@
+---
+allowed-tools: [Read, Grep, Glob, Bash, Write, TodoWrite]
+description: "Generate comprehensive project indexes and documentation maps"
+---
+
 # /sc index - Project Indexing Command
 
 ## Description

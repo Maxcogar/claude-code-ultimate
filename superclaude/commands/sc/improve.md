@@ -1,3 +1,8 @@
+---
+allowed-tools: [Read, Edit, MultiEdit, Write, Grep, Bash, Glob, TodoWrite]
+description: "Analyze and enhance code quality, performance, and maintainability"
+---
+
 # /sc improve - Code Improvement Command
 
 ## Description

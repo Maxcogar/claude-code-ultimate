@@ -1,3 +1,8 @@
+---
+allowed-tools: [Read, Write, Bash, Glob, TodoWrite, Task]
+description: "Execute Git version control operations via integrated MCP server"
+---
+
 # /sc git - Git Operations Command
 
 ## Description
