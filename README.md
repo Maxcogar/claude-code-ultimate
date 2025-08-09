@@ -14,10 +14,11 @@ cd claude-code-ultimate
 ## 📦 What You Get
 
 ### ✅ Core MCP Servers (Always Active)
-- **Context7**: Documentation lookup and reference
-- **Sequential**: Sequential thinking and problem solving  
-- **Playwright**: Browser automation and testing
-- **Magic**: Current magic server for UI generation
+- **Context7** (`@context7/mcp-server`): Documentation lookup and reference
+- **Sequential** (`@sequential-thinking/mcp-server`): Sequential thinking and problem solving
+- **Git** (`git-mcp-server`): Repository management and commit operations
+- **Playwright** (`@playwright/mcp-server`): Browser automation and testing
+- **Magic** (`@magic/mcp-server`): Current magic server for UI generation
 
 ### 🔧 Specialized Tools (On-Demand)
 - **Magic-MCP**: @21st-dev/magic UI builder
@@ -32,8 +33,9 @@ cd claude-code-ultimate
 
 ### 🔨 Extensions
 - **BMad-Method**: Agile AI development framework
-- **Superdesign**: VS Code design extension  
+- **Superdesign**: VS Code design extension
 - **Rule2Hook**: Global hook system for automation
+- **Prompt Refinement**: Intelligent prompt optimization
 
 ### 📋 Project Templates
 - **Web Application**: React/Next.js ready setup

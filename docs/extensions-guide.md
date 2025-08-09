@@ -76,6 +76,26 @@ cc init --template bmad-method
 - Git: `"Execute git [command] when [event]"`
 - Validation: `"Check/Validate [something] before [action]"`
 
+### 4. Prompt Refinement (Intelligent Prompt Optimization)
+**Location**: `extensions/prompt-refinement/`
+**Status**: ✅ Included
+**Purpose**: Analyze and refine prompts for clearer AI communication
+
+**Features:**
+- Smart suggestions and clarity scoring
+- Context-aware prompt enhancements
+- Template library for common tasks
+- Agent coordination for multi-step workflows
+
+**Usage:**
+```bash
+# Analyze current prompt
+/sc prompt-analyze "Improve this function"
+
+# Apply a template
+/sc prompt-template code-review
+```
+
 ## 🔧 Extension Configuration
 
 ### Global Configuration
@@ -95,6 +115,10 @@ Extensions are configured in `configs/settings.json`:
     "rule2hook": {
       "enabled": true,
       "path": "../extensions/claudecode-rule2hook"
+    },
+    "promptRefinement": {
+      "enabled": true,
+      "path": "../extensions/prompt-refinement"
     }
   }
 }
@@ -113,6 +137,10 @@ Configure extensions per project in `.claude/extensions.json`:
   "superdesign": {
     "enabled": false,
     "autoGenerate": true
+  },
+  "promptRefinement": {
+    "enabled": true,
+    "autoSuggest": true
   }
 }
 ```

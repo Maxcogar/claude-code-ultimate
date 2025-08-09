@@ -14,13 +14,21 @@ These servers are loaded automatically and provide essential functionality.
 - Code reference lookup
 - API documentation access
 
-### Sequential (`@sequential/mcp-server`) 
+### Sequential (`@sequential-thinking/mcp-server`)
 **Purpose**: Sequential thinking and problem-solving
 **Usage**: Breaks down complex problems into manageable steps
 **Commands**:
 - Step-by-step problem analysis
 - Sequential workflow management
 - Logic chain building
+
+### Git (`git-mcp-server`)
+**Purpose**: Git repository operations and history tracking
+**Usage**: Executes Git commands and manages repository state
+**Commands**:
+- Status and diff checks
+- Commit creation and review
+- Branch and tag management
 
 ### Playwright (`@playwright/mcp-server`)
 **Purpose**: Browser automation and testing
