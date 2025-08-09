@@ -1,3 +1,8 @@
+---
+allowed-tools: [Read, Write, Task, Bash, TodoWrite]
+description: "Create and manage specialized AI agents for targeted development tasks"
+---
+
 # /sc spawn - Agent Spawning Command
 
 ## Description

@@ -1,3 +1,8 @@
+---
+allowed-tools: [Read, Bash, Glob, TodoWrite]
+description: "Load project context, dependencies, and configuration for AI assistance"
+---
+
 # /sc load - Project Loading Command
 
 ## Description
