@@ -7,11 +7,11 @@ Choose your installation method:
 ```bash
 # Project-specific (recommended)
 mkdir -p .claude/commands
-cp path/to/claudecode-rule2hook/.claude/commands/rule2hook.md .claude/commands/
+cp claude-code-ultimate/extensions/claudecode-rule2hook/commands/rule2hook.md .claude/commands/
 
 # OR Global installation
 mkdir -p ~/.claude/commands  
-cp path/to/claudecode-rule2hook/.claude/commands/rule2hook.md ~/.claude/commands/
+cp claude-code-ultimate/extensions/claudecode-rule2hook/commands/rule2hook.md ~/.claude/commands/
 ```
 
 ## 2. Try It Now!
