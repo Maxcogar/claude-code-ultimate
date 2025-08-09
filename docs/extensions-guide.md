@@ -76,6 +76,28 @@ cc init --template bmad-method
 - Git: `"Execute git [command] when [event]"`
 - Validation: `"Check/Validate [something] before [action]"`
 
+### 4. Prompt Refinement
+**Location**: `extensions/prompt-refinement/`
+**Status**: ✅ Included
+**Purpose**: Analyze prompts and suggest improvements
+
+**Features:**
+- Prompt analysis with clarity scoring
+- Improvement suggestions
+- Template system for common tasks
+
+**Usage:**
+```bash
+# Analyze a prompt
+prompt-refine analyze "Fix this code" --context '{"language":"js"}'
+
+# Get suggestions
+prompt-refine suggest "Improve docs"
+
+# Apply a template
+prompt-refine template code-review -v language=TypeScript -v files="auth.ts"
+```
+
 ## 🔧 Extension Configuration
 
 ### Global Configuration
@@ -92,12 +114,16 @@ Extensions are configured in `configs/settings.json`:
       "enabled": true,
       "path": "../extensions/superdesign"
     },
-    "rule2hook": {
-      "enabled": true,
-      "path": "../extensions/claudecode-rule2hook"
+      "rule2hook": {
+        "enabled": true,
+        "path": "../extensions/claudecode-rule2hook"
+      },
+      "promptRefinement": {
+        "enabled": true,
+        "path": "../extensions/prompt-refinement"
+      }
     }
   }
-}
 ```
 
 ### Project-Specific Configuration
@@ -113,6 +139,9 @@ Configure extensions per project in `.claude/extensions.json`:
   "superdesign": {
     "enabled": false,
     "autoGenerate": true
+  },
+  "promptRefinement": {
+    "enabled": true
   }
 }
 ```
