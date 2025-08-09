@@ -1,0 +1,41 @@
+# Test Rule Collection - For Quick Testing
+
+## Basic Rules
+Format Python files with black after editing
+Run git status when finishing a task
+Check for TODO comments before committing
+
+## File Type Specific Rules
+Format JavaScript files with prettier after saving .js files
+Run eslint --fix on TypeScript files before saving
+Validate JSON schema when editing .json files
+
+## Testing Related Rules
+Run pytest when modifying test_*.py files
+Execute npm test after changing files in __tests__ directory
+Run unit tests before pushing to remote
+
+## Security Rules
+Scan for API keys before saving configuration files
+Check for hardcoded passwords in code before committing
+Validate environment variables before running deployment scripts
+
+## Notification Rules
+Send Slack notification when pushing to main branch
+Alert team when modifying database migrations
+Log all changes to critical system files
+
+## Complex Command Rules
+Run "npm run lint && npm run test" after editing source files
+Execute "black . && flake8 && pytest" before committing Python code
+Check file size and run "prettier --write" if less than 1000 lines
+
+## Conditional Rules
+Format only if file extension is .py or .js
+Run tests only if changes affect src/ directory
+Deploy only after all tests pass
+
+## Workflow Rules
+Create backup before overwriting important files
+Clear cache after modifying configuration
+Restart server when .env file changes
