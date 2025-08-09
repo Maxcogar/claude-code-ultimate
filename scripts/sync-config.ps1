@@ -81,7 +81,7 @@ if (-not (Test-Path $claudeExtensionsDir)) {
     New-Item -Path $claudeExtensionsDir -ItemType Directory -Force | Out-Null
 }
 
-$extensions = @("bmad-method", "superdesign", "claudecode-rule2hook")
+$extensions = @("bmad-method", "superdesign", "claudecode-rule2hook", "prompt-refinement")
 foreach ($extension in $extensions) {
     $sourcePath = "$extensionsDir\$extension"
     $linkPath = "$claudeExtensionsDir\$extension"

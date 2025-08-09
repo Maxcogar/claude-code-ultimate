@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "prompt-refinement": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "claude-prompt-refinement"],
+      "env": {}
+    }
+  }
+}

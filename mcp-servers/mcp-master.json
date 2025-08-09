@@ -35,6 +35,11 @@
       "args": ["/c", "npx", "-y", "git-mcp-server"],
       "env": {}
     },
+    "prompt-refinement": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "claude-prompt-refinement"],
+      "env": {}
+    },
     "freecad-mcp": {
       "command": "cmd",
       "args": ["/c", "python", "-m", "freecad_mcp.server"],
