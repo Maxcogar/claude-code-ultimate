@@ -78,6 +78,18 @@ const codeReviewPrompt = promptRefiner.template('code-review', {
 - `Ctrl+Alt+R` → Quick prompt refinement
 - `Ctrl+Alt+T` → Open template picker
 
+### CLI Usage
+```bash
+# Analyze a prompt
+prompt-refine analyze "Fix this code" --context '{"language":"js"}'
+
+# Get improvement suggestions
+prompt-refine suggest "Improve docs"
+
+# Apply template with variables
+prompt-refine template code-review -v language=TypeScript -v files="auth.ts"
+```
+
 ## Configuration
 
 ### Settings
@@ -211,6 +223,14 @@ git clone https://github.com/maxcogar/claude-prompt-refinement
 cd claude-prompt-refinement
 npm install
 npm run dev
+```
+
+### Build
+
+Run the following to create a production build using Webpack:
+
+```bash
+npm run build
 ```
 
 ## License

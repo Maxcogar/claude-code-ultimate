@@ -24,6 +24,10 @@
     "rule2hook": {
       "enabled": true,
       "path": "../extensions/claudecode-rule2hook"
+    },
+    "promptRefinement": {
+      "enabled": true,
+      "path": "../extensions/prompt-refinement"
     }
   },
   "workspace": {
